@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fdeef3">
+  <title>一封写给某某某的信</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c2456d' d='M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+  <style>
+    :root{
+      --ink:#412a3a; --ink-soft:#7d5f70;
+      --rose:#c2456d; --rose-deep:#a93255; --rose-soft:#eea1bb;
+      --blush:#fdeef3; --cream:#fff9f6; --lav:#f1e7f5; --gold:#d3a15f;
+      --night:#2a1c30; --night-ink:#f6e9ef;
+      --line:rgba(194,69,109,.18);
+      --serif:"Noto Serif SC",serif;
+      --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);color:var(--ink);background:var(--blush);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    #hearts{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.85}
+    .grain{position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:overlay;opacity:.06;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");}
+    main{position:relative;z-index:2}
+
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+      padding:14px 20px;pointer-events:none;gap:10px}
+    .topbar .brand{font-family:var(--serif);font-weight:600;letter-spacing:.12em;font-size:13px;color:var(--rose-deep);
+      display:flex;align-items:center;gap:8px;text-shadow:0 1px 0 rgba(255,255,255,.6);pointer-events:auto;
+      cursor:pointer;border-radius:6px;padding:2px 6px;transition:background .2s}
+    .topbar .brand:hover{background:rgba(255,255,255,.5)}
+    .topbar .brand .name::after{content:"✎";font-size:10px;opacity:.5;margin-left:3px}
+    .topbar .brand svg{width:18px;height:18px}
+    .topbar .tools{display:flex;gap:8px;pointer-events:auto}
+    .tool-btn{display:flex;align-items:center;gap:6px;background:rgba(255,249,246,.72);
+      border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;color:var(--rose-deep);
+      font-size:12px;font-family:var(--sans);backdrop-filter:blur(4px);transition:transform .25s var(--ease),background .2s}
+    .tool-btn:hover{transform:translateY(-1px);background:#fff}
+    .tool-btn svg{width:16px;height:16px}
+
+    section{position:relative;padding:96px 22px}
+    .wrap{max-width:960px;margin:0 auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.35em;color:var(--rose);font-weight:500;margin-bottom:18px}
+    .eyebrow::before{content:"";width:26px;height:1px;background:var(--rose-soft)}
+    h2{font-family:var(--serif);font-weight:700;font-size:30px;line-height:1.35;letter-spacing:.04em}
+    .lead{margin-top:14px;color:var(--ink-soft);font-weight:300;max-width:56ch}
+    .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+    .reveal.in{opacity:1;transform:none}
+
+    #hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 22px 60px}
+    .hero-eyebrow{font-size:12px;letter-spacing:.5em;color:var(--rose);font-weight:500;margin-bottom:22px;opacity:0;animation:fadeIn 1s var(--ease) .2s forwards}
+    h1{font-family:var(--serif);font-weight:900;font-size:42px;line-height:1.3;letter-spacing:.06em;color:var(--ink);opacity:0;animation:fadeUp 1.1s var(--ease) .45s forwards}
+    .hero-sub{margin-top:20px;font-weight:300;color:var(--ink-soft);font-size:16px;max-width:30em;opacity:0;animation:fadeUp 1.1s var(--ease) .7s forwards}
+    .envelope{width:min(360px,86vw);margin:38px auto 30px;position:relative;cursor:pointer;opacity:0;animation:fadeUp 1.1s var(--ease) .9s forwards;perspective:900px}
+    .env-body{position:relative;height:172px;border-radius:16px;background:linear-gradient(160deg,#fff,#ffe9f1 60%,#ffd6e4);
+      box-shadow:0 22px 50px -18px rgba(194,69,109,.45);overflow:hidden;display:flex;align-items:center;justify-content:center;transform:translateY(0);transition:transform .6s var(--ease)}
+    .env-flap{position:absolute;top:0;left:0;right:0;height:90px;background:linear-gradient(180deg,#f6c3d4,#f8d5e0);
+      border-radius:14px 14px 0 0;transform-origin:top center;transform:rotateX(0);transition:transform .7s var(--ease);z-index:3}
+    .env-body::after{content:"";position:absolute;top:0;left:0;right:0;height:90px;background:linear-gradient(180deg,#f8d5e0,#f6c3d4);clip-path:polygon(0 0,100% 0,50% 72%);z-index:2}
+    .env-seal{position:absolute;top:96px;left:50%;transform:translateX(-50%);z-index:4;width:44px;height:44px;border-radius:50%;
+      background:radial-gradient(circle at 35% 30%,#ee87a6,#b9456b);box-shadow:0 6px 16px rgba(185,69,107,.5);display:grid;place-items:center;transition:transform .5s var(--ease)}
+    .env-seal svg{width:22px;height:22px}
+    .env-txt{position:relative;z-index:1;font-family:var(--serif);color:var(--rose-deep);font-size:15px;letter-spacing:.2em}
+    .env-hint{position:absolute;left:0;right:0;bottom:-34px;font-size:13px;color:var(--ink-soft);letter-spacing:.15em}
+    .envelope:hover .env-body{transform:translateY(-4px)}
+    .envelope.open .env-flap{transform:rotateX(180deg)}
+    .envelope.open .env-seal{transform:translateX(-50%) translateY(-8px) scale(.5);opacity:0}
+    .envelope.open .env-body{animation:popOut .6s var(--ease) forwards}
+    @keyframes popOut{0%{transform:translateY(0)}45%{transform:translateY(-26px) scale(1.04)}100%{transform:translateY(0) scale(1)}}
+    #startBtn{margin-top:6px;border:none;cursor:pointer;font-family:var(--serif);font-size:18px;letter-spacing:.3em;color:#fff;padding:16px 40px;border-radius:999px;
+      background:linear-gradient(120deg,var(--rose-deep),var(--rose) 60%,var(--rose-soft));box-shadow:0 18px 40px -14px rgba(194,69,109,.7);
+      opacity:0;animation:fadeUp 1.1s var(--ease) 1.2s forwards;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+    #startBtn:hover{transform:translateY(-3px);box-shadow:0 24px 48px -14px rgba(194,69,109,.75)}
+    .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;
+      gap:6px;color:var(--ink-soft);font-size:12px;letter-spacing:.3em;opacity:0;animation:fadeIn 1s var(--ease) 1.6s forwards}
+    .scroll-hint .mouse{width:20px;height:32px;border:1.5px solid var(--rose-soft);border-radius:12px;position:relative}
+    .scroll-hint .mouse::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:7px;margin-left:-1.5px;border-radius:2px;background:var(--rose);animation:wheel 1.6s infinite}
+    @keyframes wheel{0%{opacity:1;transform:translateY(0)}70%{opacity:0;transform:translateY(10px)}100%{opacity:0}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    #letter{background:linear-gradient(180deg,var(--blush),var(--cream))}
+    .letter-card{position:relative;margin-top:36px;background:#fffdfb;border:1px solid var(--line);border-radius:18px;padding:42px 26px 38px;box-shadow:0 30px 60px -30px rgba(165,60,96,.28)}
+    .letter-card::before{content:"";position:absolute;top:-14px;left:50%;transform:translateX(-50%) rotate(-6deg);width:150px;height:38px;background:rgba(249,235,240,.9);border:1px solid var(--line);border-radius:6px}
+    .letter-addr{text-align:center;font-family:var(--serif);font-size:22px;letter-spacing:.1em;color:var(--rose-deep);margin-bottom:26px;cursor:pointer;border-radius:8px;padding:2px 6px;display:inline-block;transition:background .2s}
+    .letter-addr:hover{background:rgba(253,238,243,.8)}
+    .letter-body{font-weight:300;color:var(--ink);font-size:16.5px;min-height:13em}
+    .letter-body p{margin-bottom:1.15em}
+    .letter-sig{margin-top:26px;text-align:right;font-family:var(--serif);color:var(--rose-deep);letter-spacing:.12em;cursor:pointer;border-radius:6px;padding:2px 6px;display:inline-block;transition:background .2s}
+    .letter-sig:hover{background:rgba(253,238,243,.8)}
+    .caret{display:inline-block;width:2px;height:1.2em;background:var(--rose);vertical-align:-.2em;margin-left:2px;animation:blink 1s steps(2) infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .letter-tip{margin-top:20px;text-align:center;font-size:13px;color:var(--ink-soft);letter-spacing:.1em}
+
+    #story{background:var(--cream)}
+    .timeline{margin-top:44px;display:grid;grid-template-columns:1fr;gap:18px}
+    .node{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 22px;cursor:pointer;transition:transform .4s var(--ease),box-shadow .4s var(--ease);overflow:hidden}
+    .node::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(var(--rose-soft),var(--rose))}
+    .node:hover{transform:translateY(-4px);box-shadow:0 24px 46px -26px rgba(165,60,96,.4)}
+    .node .t{font-size:12px;letter-spacing:.3em;color:var(--rose);font-weight:500;display:block;margin-bottom:10px}
+    .node .k{font-family:var(--serif);font-size:20px;color:var(--ink);display:flex;align-items:center;gap:10px}
+    .node .k svg{width:20px;height:20px;flex:none;color:var(--rose)}
+    .node .d{max-height:0;overflow:hidden;opacity:0;transition:max-height .5s var(--ease),opacity .5s var(--ease),margin .5s var(--ease)}
+    .node .d p{font-weight:300;color:var(--ink-soft);font-size:15px}
+    .node.on .d{max-height:200px;opacity:1;margin-top:14px}
+
+    #reasons{background:linear-gradient(180deg,var(--cream),var(--lav))}
+    .reason-tool{margin-top:30px;text-align:center}
+    .draw-btn{border:1.5px solid var(--rose);background:#fff;color:var(--rose-deep);font-family:var(--serif);font-size:15px;letter-spacing:.2em;padding:13px 30px;border-radius:999px;cursor:pointer;transition:all .3s var(--ease)}
+    .draw-btn:hover{background:var(--rose);color:#fff;transform:translateY(-2px)}
+    .draw-result{margin:22px auto 0;min-height:56px;display:grid;place-items:center;color:var(--rose-deep);font-family:var(--serif);font-size:18px;letter-spacing:.04em;transition:opacity .4s var(--ease)}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+    .card{perspective:900px;height:150px;cursor:pointer}
+    .card-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s var(--ease)}
+    .card.flip .card-in{transform:rotateY(180deg)}
+    .card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:15px;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center}
+    .card-front{background:linear-gradient(150deg,#fff,#ffe9f1);border:1px solid var(--line)}
+    .card-front svg{width:30px;height:30px;color:var(--rose)}
+    .card-front .tap{position:absolute;bottom:10px;font-size:11px;color:var(--rose-soft);letter-spacing:.15em}
+    .card-back{background:linear-gradient(150deg,var(--rose-deep),var(--rose));transform:rotateY(180deg);color:#fff;font-family:var(--serif);font-size:15px;line-height:1.7;box-shadow:0 18px 40px -18px rgba(165,60,96,.5)}
+    .card.hint .card-in{animation:wiggle .5s var(--ease)}
+    @keyframes wiggle{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+    #memories{background:linear-gradient(180deg,var(--lav),var(--blush))}
+    .mem-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+    .mem-btn{border:1.5px solid var(--rose);background:#fff;color:var(--rose-deep);font-family:var(--serif);font-size:14px;letter-spacing:.15em;padding:11px 22px;border-radius:999px;cursor:pointer;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:8px}
+    .mem-btn:hover{background:var(--rose);color:#fff;transform:translateY(-2px)}
+    .mem-btn.danger{border-color:#d9a0b0;color:#a93255}
+    .mem-btn.danger:hover{background:#a93255;border-color:#a93255;color:#fff}
+    .mem-btn svg{width:16px;height:16px}
+    .mem-empty{margin-top:30px;text-align:center;color:var(--ink-soft);font-weight:300;font-size:15px;padding:40px 20px;border:1.5px dashed var(--line);border-radius:16px;background:rgba(255,255,255,.4)}
+    .mem-grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:26px}
+    .mem-item{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 18px 40px -30px rgba(165,60,96,.3);display:flex;flex-direction:column;position:relative}
+    .mem-item .photo{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#f7e9ef}
+    .mem-item .photo-placeholder{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#fff,#ffe9f1);color:var(--rose-soft);font-size:13px;letter-spacing:.2em}
+    .mem-item .photo-placeholder svg{width:42px;height:42px;opacity:.5}
+    .mem-item .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .mem-item .date{font-size:11px;letter-spacing:.25em;color:var(--rose);font-weight:500}
+    .mem-item .txt{font-weight:300;color:var(--ink);font-size:15px;white-space:pre-wrap;word-break:break-word;flex:1}
+    .mem-item .txt.editable{cursor:pointer;border-radius:6px;transition:background .2s}
+    .mem-item .txt.editable:hover{background:rgba(253,238,243,.8)}
+    .mem-item .del{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;background:rgba(42,28,48,.55);color:#fff;display:grid;place-items:center;opacity:0;transition:opacity .25s,background .2s}
+    .mem-item:hover .del{opacity:1}
+    .mem-item .del:hover{background:#a93255}
+    .mem-item .del svg{width:15px;height:15px}
+
+    #confess{background:radial-gradient(120% 120% at 50% 0%,#3a2540,#2a1c30);color:var(--night-ink);text-align:center}
+    #confess .eyebrow{color:var(--rose-soft)}
+    #confess .eyebrow::before{background:rgba(238,161,187,.5)}
+    #confess h2{color:#fff}
+    #confess .lead{color:rgba(246,233,239,.72);margin-left:auto;margin-right:auto}
+    .q-title{margin-top:44px;font-family:var(--serif);font-size:34px;font-weight:700;letter-spacing:.06em;color:#fff}
+    .q-sub{margin-top:10px;color:rgba(246,233,239,.6);font-size:14px;letter-spacing:.3em}
+    .actions{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:40px}
+    .btn-yes{border:none;cursor:pointer;font-family:var(--serif);font-size:19px;letter-spacing:.15em;color:#fff;padding:17px 52px;border-radius:999px;background:linear-gradient(120deg,#e0628a,#c2456d 55%,#e8a14f);box-shadow:0 20px 46px -14px rgba(224,98,138,.75);position:relative;transition:transform .3s var(--ease)}
+    .btn-yes:hover{transform:scale(1.05)}
+    .btn-no{border:1.5px solid rgba(246,233,239,.5);background:rgba(255,255,255,.06);color:rgba(246,233,239,.85);font-family:var(--serif);font-size:16px;letter-spacing:.15em;padding:15px 34px;border-radius:999px;cursor:pointer;position:relative;transition:transform .25s var(--ease);touch-action:manipulation}
+    .confirm{padding:80px 22px;display:none;text-align:center}
+    .confirm.show{display:block;animation:fadeIn .8s var(--ease)}
+    .confirm h3{font-family:var(--serif);font-size:34px;color:#fff;letter-spacing:.1em}
+    .confirm .p{margin-top:16px;color:rgba(246,233,239,.78);font-weight:300;font-size:16px}
+    .confirm .hearts-count{margin-top:30px;font-family:var(--serif);color:var(--gold);font-size:18px;letter-spacing:.1em}
+    .confirm .again{margin-top:34px;border:1.5px solid rgba(246,233,239,.5);background:none;color:rgba(246,233,239,.85);font-family:var(--serif);font-size:14px;letter-spacing:.2em;padding:12px 26px;border-radius:999px;cursor:pointer}
+    @keyframes heartBurst{0%{transform:translate(0,0) scale(0);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1);opacity:0}}
+    .burst{position:fixed;z-index:60;pointer-events:none;width:18px;height:18px}
+
+    #promise{background:var(--blush)}
+    .promise-list{margin-top:38px;display:grid;grid-template-columns:1fr;gap:14px}
+    .promise{display:flex;align-items:flex-start;gap:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+    .promise .dot{flex:none;width:30px;height:30px;border-radius:50%;background:linear-gradient(140deg,var(--rose-soft),var(--rose));display:grid;place-items:center;color:#fff;margin-top:2px}
+    .promise .dot svg{width:15px;height:15px}
+    .promise p{font-weight:300;color:var(--ink);font-size:15.5px}
+    .final-sig{margin-top:52px;text-align:center;font-family:var(--serif);color:var(--rose-deep);letter-spacing:.2em;font-size:20px}
+
+    footer{position:relative;z-index:2;text-align:center;padding:34px 22px 40px;background:var(--blush);color:var(--ink-soft);font-size:13px;letter-spacing:.2em}
+
+    .modal-mask{position:fixed;inset:0;z-index:100;background:rgba(42,28,48,.45);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);overflow-y:auto}
+    .modal-mask.show{display:flex;animation:fadeIn .3s var(--ease)}
+    .modal{background:#fffdfb;border-radius:18px;padding:28px 24px;max-width:420px;width:100%;box-shadow:0 30px 80px -20px rgba(165,60,96,.5);border:1px solid var(--line);margin:auto}
+    .modal h3{font-family:var(--serif);font-size:22px;color:var(--rose-deep);letter-spacing:.08em;margin-bottom:6px}
+    .modal .sub{font-size:13px;color:var(--ink-soft);margin-bottom:22px;font-weight:300}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:12px;letter-spacing:.2em;color:var(--rose);margin-bottom:6px;font-weight:500}
+    .field input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:15px;font-family:var(--serif);color:var(--ink);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
+    .field input:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(194,69,109,.12)}
+    .field input::placeholder{color:#c9aeb9;font-weight:300}
+    .modal-tip{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.7;margin-bottom:20px;padding:10px 12px;background:rgba(253,238,243,.7);border-radius:8px;border-left:3px solid var(--rose-soft)}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+    .m-btn{padding:11px 22px;border-radius:999px;font-family:var(--serif);font-size:14px;letter-spacing:.1em;cursor:pointer;transition:all .25s var(--ease);border:1.5px solid transparent}
+    .m-btn.ghost{background:none;border-color:var(--line);color:var(--ink-soft)}
+    .m-btn.ghost:hover{border-color:var(--rose);color:var(--rose-deep)}
+    .m-btn.primary{background:linear-gradient(120deg,var(--rose-deep),var(--rose));color:#fff;border:none;box-shadow:0 10px 24px -8px rgba(194,69,109,.6)}
+    .m-btn.primary:hover{transform:translateY(-1px);box-shadow:0 14px 28px -8px rgba(194,69,109,.7)}
+    .m-btn.danger{background:#a93255;color:#fff;border:none}
+    .m-btn.danger:hover{background:#8e2747}
+
+    .share-link{display:flex;gap:8px;margin-top:6px}
+    .share-link input{flex:1;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:12.5px;font-family:var(--sans);color:var(--ink);background:#fff;outline:none;min-width:0}
+    .share-link input:focus{border-color:var(--rose)}
+    .share-link button{flex:none;padding:0 16px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(120deg,var(--rose-deep),var(--rose));color:#fff;font-family:var(--serif);font-size:13px;letter-spacing:.08em;transition:transform .2s}
+    .share-link button:hover{transform:translateY(-1px)}
+    .toast{position:fixed;left:50%;bottom:50px;transform:translateX(-50%) translateY(20px);z-index:200;background:#fff;color:var(--rose-deep);border:1px solid #eec1d0;padding:12px 22px;border-radius:999px;font-size:14px;box-shadow:0 12px 30px rgba(165,60,96,.25);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;max-width:86vw;text-align:center}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    .mem-preview{width:100%;aspect-ratio:4/3;border-radius:12px;object-fit:cover;background:#f7e9ef;display:none;margin-bottom:14px}
+    .mem-preview.show{display:block}
+    .file-label{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;border:1.5px solid var(--line);cursor:pointer;font-size:13px;color:var(--rose-deep);background:#fff;transition:all .2s;margin-bottom:14px}
+    .file-label:hover{border-color:var(--rose);background:rgba(253,238,243,.5)}
+    .file-label input{display:none}
+    .file-label svg{width:16px;height:16px}
+    .mem-textarea{width:100%;min-height:90px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14.5px;font-family:var(--sans);color:var(--ink);background:#fff;resize:vertical;outline:none;transition:border-color .2s,box-shadow .2s;line-height:1.7}
+    .mem-textarea:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(194,69,109,.12)}
+    .mem-modal .field input{font-family:var(--sans);font-size:14.5px}
+
+    .qr-box{text-align:center;margin-top:16px;padding:16px;background:#fff;border-radius:12px;border:1px solid var(--line)}
+    .qr-box canvas{display:block;margin:0 auto;border-radius:8px;max-width:100%}
+    .qr-tip{font-size:12px;color:var(--ink-soft);margin-top:10px;font-weight:300}
+
+    @media (min-width:768px){
+      section{padding:120px 40px}
+      h2{font-size:38px}
+      h1{font-size:60px}
+      .timeline{grid-template-columns:1fr 1fr}
+      .cards{grid-template-columns:repeat(3,1fr)}
+      .promise-list{grid-template-columns:1fr 1fr}
+      .letter-card{padding:54px 56px 44px}
+      .q-title{font-size:46px}
+      .mem-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+      .reveal{opacity:1;transform:none}
+      #hearts{display:none}
+    }
+  </style>
+</head>
+<body>
+<canvas id="hearts"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand" id="brandBtn" role="button" tabindex="0" title="点击修改名字">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/></svg>
+    <span class="name" id="brandName">某某某</span> · 心上的人
+  </div>
+  <div class="tools">
+    <button class="tool-btn" id="shareBtn" title="保存并分享链接">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7M12 3v13M8 7l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>保存并分享</span>
+    </button>
+    <button class="tool-btn" id="muteBtn" role="switch" aria-checked="true" aria-label="开关背景音乐">
+      <svg id="muteIconOn" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a4.5 4.5 0 010 7M18.5 6a8 8 0 010 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg id="muteIconOff" viewBox="0 0 24 24" fill="none" style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span id="muteTxt">音乐</span>
+    </button>
+  </div>
+</header>
+
+<main>
+<section id="hero">
+  <div class="hero-eyebrow">TO <span id="heroTo">某某某</span> · 一封手写信</div>
+  <h1>我想，把喜欢<br>认真说给你听</h1>
+  <p class="hero-sub">这里藏着我偷偷积攒了很久的心意，<br>请给我一点点时间，把它读完。</p>
+  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="打开信封">
+    <div class="env-flap"></div>
+    <div class="env-seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor" opacity=".9"/></svg></div>
+    <div class="env-body"><span class="env-txt">一封情书</span><span class="env-hint">点一下，轻轻拆开</span></div>
+  </div>
+  <button id="startBtn">打开这封信</button>
+  <div class="scroll-hint"><div class="mouse"></div><span>向下滑动</span></div>
+</section>
+
+<section id="letter">
+  <div class="wrap">
+    <span class="eyebrow reveal">第一封 · 有些话，想亲口告诉你</span>
+    <h2 class="reveal">我把心意，都写在了这里</h2>
+    <div class="letter-card reveal">
+      <div class="letter-addr" id="letterTo" role="button" tabindex="0" title="点击修改称呼">亲爱的某某某：</div>
+      <div class="letter-body" id="letterBody">
+        <p>认识你之后，我才发现，原来有些话不说出口，真的会一直萦绕在心头。</p>
+        <p>于是我把它认认真真写下来，想让你知道——遇见你，是我平淡日子里最温柔的一次例外。你笑起来的时候，仿佛能让一整天都变得明亮起来。</p>
+        <p>我不是很会说话的人，可关于你，我却有说不完的话。如果你愿意，请把这封信读完——那是我笨拙、却完全认真的心意。</p>
+      </div>
+      <div class="letter-sig" id="letterSig" role="button" tabindex="0" title="点击修改署名">—— 某某某</div>
+    </div>
+    <p class="letter-tip reveal">（这封信会慢慢写出来，请稍等一下）</p>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <span class="eyebrow reveal">第二页 · 我们的故事</span>
+    <h2 class="reveal">从认识你那天起，日子就有了光</h2>
+    <p class="lead reveal">点击每一个节点，听我偷偷记下的心底话。</p>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<section id="reasons">
+  <div class="wrap">
+    <span class="eyebrow reveal">第三页 · 为什么是你</span>
+    <h2 class="reveal">喜欢你的理由，一页都写不完</h2>
+    <p class="lead reveal">点卡片翻过来看，或按一下按钮，随机抽一个「喜欢你的理由」。每次抽取会重新洗牌，翻开新的一套。</p>
+    <div class="reason-tool reveal">
+      <button class="draw-btn" id="drawBtn">再抽一个理由</button>
+      <div class="draw-result" id="drawResult">其实，喜欢你不需要理由。</div>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<section id="memories">
+  <div class="wrap">
+    <span class="eyebrow reveal">第四页 · 我们之间的点点滴滴</span>
+    <h2 class="reveal">那些一起走过的日子</h2>
+    <p class="lead reveal">上传照片、写下小故事，记录只属于我们的瞬间。保存在你自己的浏览器里；想把回忆也分享给对方，请用「导出回忆」生成文件发送。</p>
+    <div class="mem-toolbar reveal">
+      <button class="mem-btn" id="memAddBtn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        添加一段回忆
+      </button>
+      <button class="mem-btn" id="memExportBtn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M5 21h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        导出回忆
+      </button>
+      <button class="mem-btn" id="memImportBtn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21V9M7 14l5-5 5 5M5 3h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        导入回忆
+      </button>
+      <button class="mem-btn danger" id="memRemovePageBtn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        删除第四页
+      </button>
+    </div>
+    <input type="file" id="memImportFile" accept=".json,application/json" style="display:none">
+    <div class="mem-empty" id="memEmpty">还没有回忆，点「添加一段回忆」开始吧 🌸</div>
+    <div class="mem-grid" id="memGrid"></div>
+  </div>
+</section>
+
+<section id="confess">
+  <div class="wrap">
+    <span class="eyebrow reveal">最后一页 · 藏了很久的话</span>
+    <h2 class="reveal">所以，我想问你一个问题</h2>
+    <div id="confessBox">
+      <div class="q-title reveal">你愿意，和我在一起吗？</div>
+      <div class="q-sub reveal">认真想好再回答，我可当真了</div>
+      <div class="actions reveal">
+        <button class="btn-yes" id="btnYes">我愿意</button>
+        <button class="btn-no" id="btnNo">我再想想</button>
+      </div>
+    </div>
+    <div class="confirm" id="confirmBox">
+      <h3>我们，在一起啦</h3>
+      <p class="p">从今天起，把「喜欢」换成「陪伴」，<br>把「心动」换成「每一天」。</p>
+      <div class="hearts-count" id="heartsCount"></div>
+      <button class="again" id="againBtn">再看一遍这封信</button>
+    </div>
+  </div>
+</section>
+
+<section id="promise">
+  <div class="wrap">
+    <span class="eyebrow reveal">写给你的以后</span>
+    <h2 class="reveal">我想对你承诺的几件事</h2>
+    <div class="promise-list">
+      <div class="promise reveal"><span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/></svg></span><p>以后你说的每一句话，我都会认真记在心上。</p></div>
+      <div class="promise reveal"><span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/></svg></span><p>你的开心，我会好好守护；你的难过，我会第一个到。</p></div>
+      <div class="promise reveal"><span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/></svg></span><p>偶尔吵架也没关系，我会先低头，再好好讲给你听。</p></div>
+      <div class="promise reveal"><span class="dot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/></svg></span><p>我想和你，一起去看更大的世界、更多的四季。</p></div>
+    </div>
+    <div class="final-sig reveal">—— <span id="finalSig">某某某</span> · 为你心跳的每一天</div>
+  </div>
+</section>
+</main>
+
+<footer>© 一封给你的信 · 用心制作</footer>
+
+<div class="modal-mask" id="nameModal">
+  <div class="modal">
+    <h3>修改名字</h3>
+    <p class="sub">改完点保存，页面会立即更新</p>
+    <div class="field"><label>对方的称呼</label><input id="inputYou" type="text" maxlength="12" placeholder="比如：小鹿" autocomplete="off"></div>
+    <div class="field"><label>你的署名</label><input id="inputMe" type="text" maxlength="12" placeholder="比如：阿泽" autocomplete="off"></div>
+    <div class="modal-tip">💡 分享链接里只包含名字，所以链接很短、任何浏览器都能打开；回忆内容请用「导出回忆」生成文件发送。</div>
+    <div class="modal-actions">
+      <button class="m-btn ghost" id="modalCancel">取消</button>
+      <button class="m-btn primary" id="modalSave">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="shareModal">
+  <div class="modal">
+    <h3>保存成功，链接已生成</h3>
+    <p class="sub">复制下面的链接发给对方，打开就是你改好的版本</p>
+    <div class="share-link">
+      <input id="shareInput" type="text" readonly>
+      <button id="copyBtn">复制</button>
+    </div>
+    <div class="qr-box" id="qrBox">
+      <canvas id="qrCanvas" width="180" height="180"></canvas>
+      <div class="qr-tip">手机扫码即可打开，不用手动复制</div>
+    </div>
+    <div class="modal-tip">🔗 链接只包含名字，**不包含照片和回忆**，所以很短、任何浏览器都能打开。想把第四页的回忆也分享给对方，请先在下方「导出回忆」生成文件，连同链接一起发给对方，对方打开链接后点「导入回忆」即可。</div>
+    <div class="modal-actions">
+      <button class="m-btn ghost" id="shareClose">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask mem-modal" id="memModal">
+  <div class="modal">
+    <h3 id="memModalTitle">添加一段回忆</h3>
+    <p class="sub">照片可选，文字可选，至少填一项</p>
+    <img class="mem-preview" id="memPreview" alt="">
+    <label class="file-label">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 16l4-4 4 4 4-6 4 6M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/></svg>
+      选择照片
+      <input type="file" id="memFile" accept="image/*">
+    </label>
+    <div class="field"><label>日期 / 小标题（可选）</label><input id="memDate" type="text" maxlength="20" placeholder="比如：2024.05.20 · 第一次一起看海"></div>
+    <div class="field"><label>想说的话（可选）</label><textarea class="mem-textarea" id="memText" maxlength="300" placeholder="那天你笑起来的样子，我一直记得……"></textarea></div>
+    <div class="modal-tip">💡 照片会压缩后保存在你的浏览器里。导出回忆时会把照片一起打包进文件，不经过链接，所以多少张都不会影响链接打开。</div>
+    <div class="modal-actions">
+      <button class="m-btn ghost" id="memCancel">取消</button>
+      <button class="m-btn primary" id="memSave">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="memRemoveModal">
+  <div class="modal">
+    <h3>删除第四页？</h3>
+    <p class="sub">这一页和里面的所有回忆都会被移除，其他人打开你的分享链接也看不到这一页。</p>
+    <div class="modal-tip">⚠️ 删除后不能恢复。如果只是暂时不想展示，也可以先不分享这个页面。</div>
+    <div class="modal-actions">
+      <button class="m-btn ghost" id="memRemoveCancel">取消</button>
+      <button class="m-btn danger" id="memRemoveConfirm">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+var DEFAULT_YOU = "某某某";
+var DEFAULT_ME  = "某某某";
+var LS_NAMES = "love_letter_names_v1";
+var LS_MEMORIES = "love_letter_memories_v1";
+var LS_PAGE_HIDDEN = "love_letter_page_hidden_v1";
+var MAX_MEMORIES = 30;
+var PHOTO_MAX_W = 900;
+var PHOTO_QUALITY = 0.72;
+
+var state = { you: DEFAULT_YOU, me: DEFAULT_ME, memories: [], pageHidden: false };
+
+function $(id){ return document.getElementById(id); }
+function safeParse(raw){ try{ return JSON.parse(raw); }catch(e){ return null; } }
+function uid(){ return "m" + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function clampStr(s, n){ return String(s==null?"":s).slice(0, n); }
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+var toastEl = $("toast"), toastTimer = null;
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 2400);
+}
+
+function readURL(){
+  var out = { you:null, me:null, hidden:null };
+  try{
+    var p = new URLSearchParams(window.location.search);
+    var y = p.get("you"); if(y) out.you = clampStr(y, 20);
+    var m = p.get("me");  if(m) out.me  = clampStr(m, 20);
+    if(p.get("hideMem") === "1") out.hidden = true;
+  }catch(e){}
+  return out;
+}
+function readLS(){
+  var o = {};
+  var n = safeParse(localStorage.getItem(LS_NAMES));
+  if(n && typeof n.you==="string" && typeof n.me==="string"){ o.you = n.you; o.me = n.me; }
+  var m = safeParse(localStorage.getItem(LS_MEMORIES));
+  if(Array.isArray(m)) o.memories = m;
+  try{ if(localStorage.getItem(LS_PAGE_HIDDEN)==="1") o.hidden = true; }catch(e){}
+  return o;
+}
+function saveLS(){
+  try{
+    localStorage.setItem(LS_NAMES, JSON.stringify({you:state.you, me:state.me}));
+    localStorage.setItem(LS_MEMORIES, JSON.stringify(state.memories));
+    localStorage.setItem(LS_PAGE_HIDDEN, state.pageHidden ? "1" : "0");
+  }catch(e){}
+}
+
+function renderNames(){
+  var you = state.you, me = state.me;
+  $("brandName").textContent = you;
+  $("heroTo").textContent = you;
+  $("letterTo").textContent = "亲爱的" + you + "：";
+  $("letterSig").textContent = "—— " + me;
+  $("finalSig").textContent = me;
+  document.title = "一封写给" + you + "的信";
+}
+
+var memGrid = $("memGrid"), memEmpty = $("memEmpty");
+
+function renderMemories(){
+  memGrid.innerHTML = "";
+  if(state.memories.length === 0){ memEmpty.style.display = "block"; return; }
+  memEmpty.style.display = "none";
+  state.memories.forEach(function(m){
+    var item = document.createElement("div");
+    item.className = "mem-item";
+    var photoHtml = m.photo
+      ? '<img class="photo" src="'+m.photo+'" alt="">'
+      : '<div class="photo-placeholder"><svg viewBox="0 0 24 24" fill="none"><path d="M4 16l4-4 4 4 4-6 4 6M4 20h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/></svg></div>';
+    item.innerHTML =
+      '<button class="del" data-id="'+m.id+'" aria-label="删除这条回忆">'+
+        '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+      '</button>'+
+      photoHtml+
+      '<div class="body">'+
+        (m.date ? '<div class="date">'+escapeHtml(m.date)+'</div>' : '')+
+        (m.text ? '<div class="txt editable" data-id="'+m.id+'">'+escapeHtml(m.text)+'</div>' : '<div class="txt" style="color:#c9aeb9">（没有文字，点这里可以补上）</div>')+
+      '</div>';
+    memGrid.appendChild(item);
+  });
+  memGrid.querySelectorAll(".del").forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      var id = btn.getAttribute("data-id");
+      state.memories = state.memories.filter(function(x){ return x.id !== id; });
+      saveLS(); renderMemories(); showToast("已删除");
+    });
+  });
+  memGrid.querySelectorAll(".txt.editable").forEach(function(el){
+    el.addEventListener("click", function(){
+      var id = el.getAttribute("data-id");
+      var target = state.memories.filter(function(x){ return x.id === id; })[0];
+      if(target) openMemModal(target);
+    });
+  });
+}
+
+var memModal = $("memModal");
+var memModalTitle = $("memModalTitle");
+var memPreview = $("memPreview");
+var memFile = $("memFile");
+var memDate = $("memDate");
+var memText = $("memText");
+var editingId = null;
+var pendingPhoto = null;
+
+function resetMemForm(){
+  editingId = null; pendingPhoto = null;
+  memModalTitle.textContent = "添加一段回忆";
+  memPreview.classList.remove("show"); memPreview.src = "";
+  memFile.value = ""; memDate.value = ""; memText.value = "";
+}
+function openMemModal(existing){
+  resetMemForm();
+  if(existing){
+    editingId = existing.id;
+    memModalTitle.textContent = "修改回忆";
+    memDate.value = existing.date || "";
+    memText.value = existing.text || "";
+    if(existing.photo){ memPreview.src = existing.photo; memPreview.classList.add("show"); pendingPhoto = existing.photo; }
+  }
+  memModal.classList.add("show");
+  setTimeout(function(){ memDate.focus(); }, 50);
+}
+function closeMemModal(){ memModal.classList.remove("show"); }
+
+$("memAddBtn").addEventListener("click", function(){ openMemModal(null); });
+$("memCancel").addEventListener("click", closeMemModal);
+memModal.addEventListener("click", function(e){ if(e.target===memModal) closeMemModal(); });
+
+memFile.addEventListener("change", function(){
+  var f = memFile.files && memFile.files[0];
+  if(!f) return;
+  if(!/^image\//.test(f.type)){ showToast("请选择图片文件"); return; }
+  compressImage(f, function(dataUrl){
+    pendingPhoto = dataUrl;
+    memPreview.src = dataUrl;
+    memPreview.classList.add("show");
+  }, function(err){ showToast("图片处理失败：" + err); });
+});
+
+function compressImage(file, onOk, onErr){
+  var reader = new FileReader();
+  reader.onerror = function(){ onErr("读取失败"); };
+  reader.onload = function(){
+    var img = new Image();
+    img.onerror = function(){ onErr("图片无法解析"); };
+    img.onload = function(){
+      var w = img.width, h = img.height;
+      if(w > PHOTO_MAX_W){ h = Math.round(h * PHOTO_MAX_W / w); w = PHOTO_MAX_W; }
+      var canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      try{
+        var dataUrl = canvas.toDataURL("image/jpeg", PHOTO_QUALITY);
+        if(dataUrl.length > 400 * 1024) dataUrl = canvas.toDataURL("image/jpeg", 0.55);
+        onOk(dataUrl);
+      }catch(e){ onErr("压缩失败"); }
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+$("memSave").addEventListener("click", function(){
+  var date = clampStr(memDate.value.trim(), 20);
+  var text = clampStr(memText.value.trim(), 300);
+  if(!date && !text && !pendingPhoto){ showToast("至少填一项内容"); return; }
+  if(editingId){
+    state.memories = state.memories.map(function(m){
+      if(m.id === editingId) return { id: m.id, date: date, text: text, photo: pendingPhoto || "" };
+      return m;
+    });
+  }else{
+    if(state.memories.length >= MAX_MEMORIES){ showToast("最多保存 " + MAX_MEMORIES + " 条回忆"); return; }
+    state.memories.push({ id: uid(), date: date, text: text, photo: pendingPhoto || "" });
+  }
+  saveLS(); renderMemories(); closeMemModal();
+  showToast(editingId ? "已更新" : "已添加");
+});
+
+$("memExportBtn").addEventListener("click", function(){
+  if(state.memories.length === 0){ showToast("还没有回忆可以导出"); return; }
+  var data = {
+    type: "love-letter-memories",
+    version: 1,
+    you: state.you,
+    me: state.me,
+    exportedAt: new Date().toISOString(),
+    memories: state.memories
+  };
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json;charset=utf-8"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  var safeName = ("回忆-" + (state.you || "TA") + "-" + (state.me || "我")).replace(/[\\/:*?"<>|]/g, "_");
+  a.href = url;
+  a.download = safeName + ".json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  showToast("已导出，把文件发给对方即可");
+});
+
+var importFile = $("memImportFile");
+$("memImportBtn").addEventListener("click", function(){ importFile.click(); });
+importFile.addEventListener("change", function(){
+  var f = importFile.files && importFile.files[0];
+  if(!f) return;
+  var reader = new FileReader();
+  reader.onerror = function(){ showToast("文件读取失败"); };
+  reader.onload = function(){
+    try{
+      var data = JSON.parse(reader.result);
+      if(!data || data.type !== "love-letter-memories" || !Array.isArray(data.memories)){
+        showToast("这不是有效的回忆文件"); return;
+      }
+      if(!confirm("导入会覆盖当前第四页的回忆（共 " + data.memories.length + " 条），继续吗？")) return;
+      state.memories = data.memories.slice(0, MAX_MEMORIES).map(function(m){
+        return {
+          id: m.id || uid(),
+          date: clampStr(m.date || "", 20),
+          text: clampStr(m.text || "", 300),
+          photo: m.photo || ""
+        };
+      });
+      state.pageHidden = false;
+      $("memories").style.display = "";
+      saveLS(); renderMemories();
+      showToast("已导入 " + state.memories.length + " 条回忆");
+    }catch(e){ showToast("文件格式不对"); }
+  };
+  reader.readAsText(f);
+  importFile.value = "";
+});
+
+var memRemoveModal = $("memRemoveModal");
+$("memRemovePageBtn").addEventListener("click", function(){ memRemoveModal.classList.add("show"); });
+$("memRemoveCancel").addEventListener("click", function(){ memRemoveModal.classList.remove("show"); });
+memRemoveModal.addEventListener("click", function(e){ if(e.target===memRemoveModal) memRemoveModal.classList.remove("show"); });
+$("memRemoveConfirm").addEventListener("click", function(){
+  state.memories = []; state.pageHidden = true; saveLS(); renderMemories();
+  $("memories").style.display = "none";
+  memRemoveModal.classList.remove("show");
+  showToast("第四页已删除");
+});
+
+var REASON_POOL = [
+  "你笑起来的样子，藏着一整个春天",
+  "和你聊天的时候，时间总是过得太快",
+  "你认真起来的样子，让我忍不住多看两眼",
+  "和你在一起，平凡的日子也变得有趣",
+  "你的温柔，是我最舒服的相处方式",
+  "你就是那个，让我想变成更好的人",
+  "你随口说的话，我都悄悄记在心里",
+  "看到好看的晚霞，第一个想分享的人是你",
+  "你在我身边的时候，连风都是温柔的",
+  "你偶尔的小脾气，也让我觉得可爱",
+  "你说「没事」的时候，我其实很在意",
+  "和你并肩走的那段路，我走了很久很久",
+  "你的名字，是我手机里最常打的两个字",
+  "你回头找我的样子，我记了很久",
+  "你难过的时候，我比自己难过还难受",
+  "和你在一起的每一天，都值得被记住"
+];
+var CARD_COUNT = 6;
+var cardsEl = $("cards");
+var drawResult = $("drawResult");
+var currentReasons = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function pickReasons(){ return shuffle(REASON_POOL).slice(0, CARD_COUNT); }
+function renderCards(){
+  cardsEl.innerHTML = "";
+  currentReasons.forEach(function(r){
+    var c = document.createElement("div");
+    c.className = "card";
+    c.setAttribute("role","button"); c.setAttribute("tabindex","0"); c.setAttribute("aria-label","翻开理由");
+    c.innerHTML =
+      '<div class="card-in">'+
+        '<div class="card-face card-front">'+
+          '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/></svg>'+
+          '<span class="tap">点我翻开</span>'+
+        '</div>'+
+        '<div class="card-face card-back">'+escapeHtml(r)+'</div>'+
+      '</div>';
+    function flip(){ c.classList.toggle("flip"); }
+    c.addEventListener("click", flip);
+    c.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); }});
+    cardsEl.appendChild(c);
+  });
+}
+function drawNewReasons(){
+  Array.prototype.forEach.call(cardsEl.children, function(card){ card.classList.remove("flip"); });
+  setTimeout(function(){
+    currentReasons = pickReasons();
+    renderCards();
+    var pick = currentReasons[Math.floor(Math.random()*currentReasons.length)];
+    drawResult.style.opacity = 0;
+    setTimeout(function(){ drawResult.textContent = "「" + pick + "」"; drawResult.style.opacity = 1; }, 250);
+  }, 700);
+}
+$("drawBtn").addEventListener("click", drawNewReasons);
+
+var nameModal = $("nameModal");
+var inputYou = $("inputYou");
+var inputMe = $("inputMe");
+
+function openNameModal(){
+  inputYou.value = state.you; inputMe.value = state.me;
+  nameModal.classList.add("show");
+  setTimeout(function(){ inputYou.focus(); inputYou.select(); }, 50);
+}
+function closeNameModal(){ nameModal.classList.remove("show"); }
+function saveNameModal(){
+  var y = (inputYou.value || "").trim() || DEFAULT_YOU;
+  var m = (inputMe.value || "").trim() || DEFAULT_ME;
+  state.you = clampStr(y, 12); state.me = clampStr(m, 12);
+  saveLS(); renderNames(); closeNameModal();
+  if(letterTyped) rebuildTypedLetter();
+  showToast("名字已保存");
+}
+$("brandBtn").addEventListener("click", openNameModal);
+$("brandBtn").addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openNameModal(); }});
+$("letterTo").addEventListener("click", openNameModal);
+$("letterTo").addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openNameModal(); }});
+$("letterSig").addEventListener("click", openNameModal);
+$("letterSig").addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openNameModal(); }});
+$("modalCancel").addEventListener("click", closeNameModal);
+$("modalSave").addEventListener("click", saveNameModal);
+nameModal.addEventListener("click", function(e){ if(e.target===nameModal) closeNameModal(); });
+inputYou.addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); saveNameModal(); }});
+inputMe.addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); saveNameModal(); }});
+
+var shareModal = $("shareModal");
+var shareInput = $("shareInput");
+var qrBox = $("qrBox");
+var qrCanvas = $("qrCanvas");
+
+function buildShareURL(){
+  var base = window.location.origin + window.location.pathname;
+  var p = new URLSearchParams();
+  p.set("you", state.you);
+  p.set("me", state.me);
+  if(state.pageHidden) p.set("hideMem", "1");
+  return base + "?" + p.toString();
+}
+function openShareModal(){
+  saveLS();
+  shareInput.value = buildShareURL();
+  shareModal.classList.add("show");
+  setTimeout(function(){ shareInput.select(); }, 50);
+  // 生成二维码
+  if(qrBox && qrCanvas && typeof QRCode !== "undefined"){
+    QRCode.toCanvas(qrCanvas, shareInput.value, { width: 180, margin: 1, color: { dark: "#412a3a", light: "#ffffff" } }, function(err){
+      if(err) qrBox.style.display = "none";
+      else qrBox.style.display = "block";
+    });
+  }else{
+    if(qrBox) qrBox.style.display = "none";
+  }
+}
+function closeShareModal(){ shareModal.classList.remove("show"); }
+$("shareBtn").addEventListener("click", openShareModal);
+$("shareClose").addEventListener("click", closeShareModal);
+shareModal.addEventListener("click", function(e){ if(e.target===shareModal) closeShareModal(); });
+$("copyBtn").addEventListener("click", function(){
+  shareInput.select();
+  var ok = false;
+  try{ ok = document.execCommand("copy"); }catch(e){}
+  if(!ok && navigator.clipboard){
+    navigator.clipboard.writeText(shareInput.value).then(function(){ showToast("链接已复制"); })
+      .catch(function(){ showToast("请手动长按复制"); });
+    return;
+  }
+  showToast(ok ? "链接已复制" : "请手动长按复制");
+});
+
+var canvas = $("hearts"), ctx = canvas.getContext("2d");
+var hearts = [], W = 0, H = 0;
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight;
+  var n = Math.min(42, Math.floor(W*H/30000)); hearts.length = 0;
+  for(var i=0;i<n;i++) hearts.push(newP()); }
+function newP(){ return {x:Math.random()*W, y:Math.random()*H, s:6+Math.random()*16, v:.25+Math.random()*.5, ph:Math.random()*Math.PI*2, a:.12+Math.random()*.3}; }
+function drawHeart(g,x,y,s){ g.save(); g.translate(x,y); g.beginPath();
+  g.moveTo(0,s*.32); g.bezierCurveTo(0,0,-s,0,-s,s*.34); g.bezierCurveTo(-s,s*.66,-s*.4,s*1.05,0,s*1.3);
+  g.bezierCurveTo(s*.4,s*1.05,s,s*.66,s,s*.34); g.bezierCurveTo(s,0,0,0,0,s*.32); g.closePath(); g.restore(); }
+var t0 = performance.now(), rafId = 0, rafRunning = false;
+function frame(ts){
+  var k = (ts - t0)/1000; ctx.clearRect(0,0,W,H);
+  for(var i=0;i<hearts.length;i++){
+    var p = hearts[i]; p.y -= p.v; p.x += Math.sin(k*1.2+p.ph)*.25;
+    if(p.y < -p.s){ p.y = H + p.s; p.x = Math.random()*W; }
+    ctx.fillStyle = 'rgba(194,69,109,' + (p.a*Math.abs(Math.sin(k+p.ph))) + ')';
+    ctx.beginPath(); drawHeart(ctx, p.x, p.y, p.s); ctx.fill();
+  }
+  rafId = requestAnimationFrame(frame);
+}
+function startRaf(){ if(!rafRunning){ rafRunning = true; rafId = requestAnimationFrame(frame); } }
+window.addEventListener("resize", resize);
+document.addEventListener("visibilitychange", function(){
+  if(document.hidden){ rafRunning = false; cancelAnimationFrame(rafId); } else startRaf();
+});
+
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+}, {threshold:.14});
+
+var letterBody = $("letterBody");
+var letterParagraphs = [];
+Array.prototype.forEach.call(letterBody.querySelectorAll("p"), function(p){ letterParagraphs.push(p.textContent); });
+letterBody.textContent = "";
+var typingTimer = null, letterTyped = false;
+function buildLetterText(){ return letterParagraphs.join("\n\n"); }
+function typeLetter(){
+  if(typingTimer){ clearInterval(typingTimer); typingTimer = null; }
+  var all = buildLetterText(), i = 0; letterBody.textContent = "";
+  var caret = document.createElement("span"); caret.className = "caret";
+  function step(){
+    if(i <= all.length){
+      letterBody.textContent = all.slice(0,i);
+      if(!letterBody.querySelector(".caret")) letterBody.appendChild(caret);
+      i += 2;
+    }else{ clearInterval(typingTimer); typingTimer = null; letterTyped = true; if(caret.parentNode) caret.parentNode.removeChild(caret); }
+  }
+  typingTimer = setInterval(step, 42); step();
+}
+function rebuildTypedLetter(){ if(typingTimer){ clearInterval(typingTimer); typingTimer = null; } letterBody.textContent = buildLetterText(); letterTyped = true; }
+
+var envelope = $("envelope");
+function openEnvelope(){
+  if(envelope.classList.contains("open")) return;
+  envelope.classList.add("open"); startMusic();
+  setTimeout(function(){ $("letter").scrollIntoView({behavior:"smooth", block:"start"}); setTimeout(typeLetter, 400); }, 650);
+}
+envelope.addEventListener("click", openEnvelope);
+envelope.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openEnvelope(); }});
+$("startBtn").addEventListener("click", openEnvelope);
+
+var story = [
+ {t:'那天',k:'初遇',d:'第一次见你的时候，我还没有意识到，往后的日子会一直忍不住想再见你。',i:'spark'},
+ {t:'慢慢地',k:'心动',d:'某个瞬间，我发现自己的目光开始不自觉地跟着你走，连自己都没察觉。',i:'heart'},
+ {t:'现在',k:'写下这封信',d:'此刻，我把藏在心里的话一字一句写下来，想认真对你说一句：我喜欢你。',i:'pen'},
+ {t:'以后',k:'我们的未来',d:'希望往后的四季与风景，都能有你在我身边，一起去经历。',i:'star'}
+];
+var icons = {
+ spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z" fill="currentColor"/>',
+ heart:'<path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="currentColor"/>',
+ pen:'<path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 013 3L8 19l-4 1z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M14.5 6.5l3 3" stroke="currentColor" stroke-width="1.8"/>',
+ star:'<path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6L12 2z" fill="currentColor"/>'
+};
+var tl = $("timeline");
+story.forEach(function(s){
+  var n = document.createElement("div");
+  n.className = "node"; n.setAttribute("role","button"); n.setAttribute("tabindex","0"); n.setAttribute("aria-expanded","false");
+  n.innerHTML = '<span class="t">'+s.t+'</span><div class="k"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">'+icons[s.i]+'</svg>'+s.k+'</div>'+
+    '<div class="d"><p>'+s.d+'</p></div>';
+  function tog(){ var on = n.classList.toggle("on"); n.setAttribute("aria-expanded", on?"true":"false"); }
+  n.addEventListener("click", tog);
+  n.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); tog(); }});
+  tl.appendChild(n);
+});
+
+var confessBox = $("confessBox"), confirmBox = $("confirmBox");
+var btnNo = $("btnNo"), noUsed = false;
+function hideNoButton(msg){
+  if(noUsed) return; noUsed = true;
+  btnNo.style.transition = "opacity .3s, transform .3s";
+  btnNo.style.opacity = "0"; btnNo.style.transform = "scale(.6)"; btnNo.style.pointerEvents = "none";
+  setTimeout(function(){ btnNo.style.display = "none"; }, 320);
+  if(msg) showToast(msg);
+}
+btnNo.addEventListener("pointerenter", function(){ hideNoButton("「我再想想」溜走啦，那就点「我愿意」吧～"); });
+btnNo.addEventListener("touchstart", function(e){ e.preventDefault(); hideNoButton("「我再想想」溜走啦，那就点「我愿意」吧～"); }, {passive:false});
+btnNo.addEventListener("click", function(){ hideNoButton("「我再想想」溜走啦，那就点「我愿意」吧～"); });
+btnNo.addEventListener("focus", function(){ hideNoButton("「我再想想」溜走啦，那就点「我愿意」吧～"); });
+
+$("btnYes").addEventListener("click", function(){
+  confessBox.style.display = "none"; confirmBox.classList.add("show"); startMusic(); burst();
+  var c = 0, t = setInterval(function(){
+    c += 1; $("heartsCount").textContent = "你的心跳 +" + c + " 次，都是因为你";
+    if(c >= 99) clearInterval(t);
+  }, 40);
+});
+$("againBtn").addEventListener("click", function(){
+  confirmBox.classList.remove("show"); confessBox.style.display = "block";
+  $("promise").scrollIntoView({behavior:"smooth"});
+});
+function burst(){
+  var colors = ["#e0628a","#c2456d","#e8a14f","#eea1bb","#d3a15f"];
+  for(var i=0;i<26;i++){
+    var el = document.createElement("div"); el.className = "burst";
+    el.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 2.6 5 6 5c2 0 3.2 1 4 2.2C10.8 6 12 5 14 5c3.4 0 5.6 3.5 4 6.8-2.5 4.6-10 9.2-10 9.2z" fill="'+colors[i%colors.length]+'"/></svg>';
+    var a = Math.random()*Math.PI*2, dist = 70 + Math.random()*200;
+    el.style.left = window.innerWidth/2 + "px"; el.style.top = window.innerHeight/2 + "px";
+    el.style.setProperty("--dx", Math.cos(a)*dist + "px");
+    el.style.setProperty("--dy", Math.sin(a)*dist - 80 + "px");
+    el.style.animation = "heartBurst .9s " + (i*0.02) + "s var(--ease) forwards";
+    document.body.appendChild(el);
+    (function(n){ setTimeout(function(){ n.parentNode && n.parentNode.removeChild(n); }, 1300); })(el);
+  }
+}
+
+var actx = null, master = null, musicOn = false;
+var melody = [261.6,329.6,392,329.6,523.3,392,440,493.9];
+var muteBtn = $("muteBtn"), muteOn = $("muteIconOn"), muteOff = $("muteIconOff"), muteTxt = $("muteTxt");
+function startMusic(){
+  if(musicOn) return;
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if(actx.state === "suspended") actx.resume();
+    master = master || actx.createGain(); master.gain.value = 0.14; master.connect(actx.destination);
+    musicOn = true; setMuteUI(true); scheduleLoop();
+  }catch(e){}
+}
+function noteAt(freq, time, dur){
+  var o = actx.createOscillator(), g = actx.createGain();
+  o.type = "triangle"; o.frequency.value = freq;
+  g.gain.setValueAtTime(0, time); g.gain.linearRampToValueAtTime(0.5, time + 0.03);
+  g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+  o.connect(g); g.connect(master); o.start(time); o.stop(time + dur + 0.05);
+}
+var noteIdx = 0, stepT = 0.42;
+function scheduleLoop(){
+  if(!musicOn || !actx) return;
+  while(stepT < actx.currentTime + 0.9){
+    var f = melody[noteIdx % melody.length];
+    noteAt(f, stepT, 1.1);
+    if(noteIdx % 8 === 4) noteAt(f*1.5, stepT, 0.8);
+    noteIdx++; stepT += 0.42;
+  }
+  setTimeout(scheduleLoop, 260);
+}
+function setMuteUI(on){
+  muteOn.style.display = on ? "block" : "none";
+  muteOff.style.display = on ? "none" : "block";
+  muteTxt.textContent = on ? "音乐" : "静音";
+  muteBtn.setAttribute("aria-checked", on ? "true" : "false");
+}
+muteBtn.addEventListener("click", function(){
+  if(!actx){ startMusic(); if(!musicOn) return; }
+  if(master.gain.value > 0.001){ master.gain.linearRampToValueAtTime(0, actx.currentTime + 0.05); setMuteUI(false); }
+  else{ master.gain.linearRampToValueAtTime(0.14, actx.currentTime + 0.05); setMuteUI(true); }
+});
+
+function init(){
+  var url = readURL();
+  var ls = readLS();
+
+  state.you = url.you || ls.you || DEFAULT_YOU;
+  state.me  = url.me  || ls.me  || DEFAULT_ME;
+
+  state.memories = ls.memories || [];
+
+  if(url.hidden === true) state.pageHidden = true;
+  else if(ls.hidden === true) state.pageHidden = true;
+  else state.pageHidden = false;
+
+  renderNames();
+  if(state.pageHidden){ $("memories").style.display = "none"; }
+  else{ renderMemories(); }
+
+  currentReasons = pickReasons();
+  renderCards();
+
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  resize(); startRaf();
+}
+init();
+
+})();
+</script>
+</body>
+</html>
